@@ -1,7 +1,5 @@
-fastapi
-uvicorn
-sqlalchemy
-passlib
-bcrypt
-python-jose
-python-multipart
+  fastapi==0.89.1
+  uvicorn==0.20.0
+  sqlalchemy==1.4.46
+  alembic==1.9.2
+  python-dotenv==0.21.0

@@ -1,24 +1,25 @@
 from uuid import UUID
 from pydantic import BaseModel
+from typing import Optional
 
 
 class Menus(BaseModel):
     id: UUID
-    name: str
+    title: str
     description: str
-    submenu_count: int
-    difhes_count: int
+    submenus_count: Optional[int]
+    dishes_count: Optional[int]
 
 
 class Submenus(BaseModel):
     id: UUID
-    name: str
+    title: str
     description: str
-    difhes_count: int
+    dishes_count: Optional[int]
 
 
 class Dishes(BaseModel):
     id: UUID
-    name: str
+    title: str
     description: str
-    price: int
+    price: str
