@@ -1,25 +1,51 @@
-from uuid import UUID
-from pydantic import BaseModel
+import uuid
 from typing import Optional
+
+from pydantic import BaseModel
+
+
+def get_uuid():
+    return str(uuid.uuid4())
 
 
 class Menus(BaseModel):
-    id: UUID
     title: str
     description: str
-    submenus_count: Optional[int]
-    dishes_count: Optional[int]
+
+
+class ShowMenu(BaseModel):
+    title: str
+    description: str
+
+    class Config():
+        orm = True
 
 
 class Submenus(BaseModel):
-    id: UUID
+    id: Optional[str] = uuid.uuid4()
     title: str
     description: str
     dishes_count: Optional[int]
 
 
+class ShowSubmenu(BaseModel):
+    title: str
+    description: str
+
+    class Config():
+        orm = True
+
+
 class Dishes(BaseModel):
-    id: UUID
+    id: Optional[str] = uuid.uuid4()
     title: str
     description: str
     price: str
+
+
+class ShowDish(BaseModel):
+    title: str
+    price: str
+
+    class Config():
+        orm = True
