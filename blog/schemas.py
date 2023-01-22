@@ -4,10 +4,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-def get_uuid():
-    return str(uuid.uuid4())
-
-
 class Menus(BaseModel):
     title: str
     description: str
@@ -45,6 +41,7 @@ class Dishes(BaseModel):
 
 class ShowDish(BaseModel):
     title: str
+    description: str
     price: str
 
     class Config():
