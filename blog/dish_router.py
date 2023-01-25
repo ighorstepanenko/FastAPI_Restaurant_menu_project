@@ -28,7 +28,7 @@ def all_dishes(db: Session = Depends(get_db)):
     return dishes
 
 
-@router.get('/{target_dish_id}', status_code=status.HTTP_200_OK, tags=['Dishes'])
+@router.get('/{target_dish_id}', status_code=status.HTTP_200_OK)
 def get_dish(target_dish_id, db: Session = Depends(get_db)):
     dish = db.query(models.Dishes).filter(models.Dishes.id == target_dish_id).first()
     if not dish:
@@ -36,7 +36,7 @@ def get_dish(target_dish_id, db: Session = Depends(get_db)):
     return dish.response()
 
 
-@router.put('/{target_dish_id}', status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ShowDish)
+@router.put('/{target_dish_id}', status_code=status.HTTP_202_ACCEPTED)
 def update_dish(target_dish_id, request: schemas.Dishes, db: Session = Depends(get_db)):
     dish = db.query(models.Dishes).filter(models.Dishes.id == target_dish_id)
     if not dish:

@@ -1,7 +1,6 @@
 from uuid import uuid4
 
 from sqlalchemy import Column, String, ForeignKey
-from sqlalchemy.orm import Session, relationship
 
 from database import Base
 
@@ -16,21 +15,11 @@ class Menus(Base):
     title = Column(String(50))
     description = Column(String(50))
 
-    def response(self, db: Session):
-        submenus = db.query(Submenus).filter(self.id == Submenus.menu_id)
-        submenus_count = submenus.count()
-        dishes_count = 0
-        if not submenus_count:
-            pass
-        else:
-            for i in submenus:
-                dishes_count += i.response(db)["dishes_count"]
+    def response(self):
         return {
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "submenus_count": submenus_count,
-            "dishes_count": dishes_count
         }
 
 
@@ -41,19 +30,18 @@ class Submenus(Base):
     title = Column(String)
     description = Column(String)
 
-    def response(self, db: Session):
-        dishes_count = db.query(Dishes).filter(self.id == Dishes.submenu_id).count()
+    def response(self):
         return {
             "id": self.id,
             "title": self.title,
             "description": self.description,
-            "dishes_count": dishes_count
         }
 
 
 class Dishes(Base):
     __tablename__ = "dishes"
     id = Column(String, primary_key=True, index=True, default=get_uuid)
+    menu_id = Column(String, ForeignKey("menus.id", ondelete='CASCADE'))
     submenu_id = Column(String, ForeignKey("submenus.id", ondelete='CASCADE'))
     title = Column(String)
     description = Column(String)

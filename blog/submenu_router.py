@@ -17,14 +17,14 @@ def create_submenu(request: schemas.Submenus, db: Session = Depends(get_db)):
     db.add(new_submenu)
     db.commit()
     db.refresh(new_submenu)
-    return new_submenu.response(db)
+    return new_submenu.response()
 
 
 @router.get('/', status_code=status.HTTP_200_OK)
 def all_submenus(db: Session = Depends(get_db)):
     submenus = []
     for submenu in db.query(models.Submenus).all():
-        submenus.append(submenu.response(db))
+        submenus.append(submenu.response())
     return submenus
 
 
@@ -33,17 +33,17 @@ def get_submenu(target_submenu_id, db: Session = Depends(get_db)):
     submenu = db.query(models.Submenus).filter(models.Submenus.id == target_submenu_id).first()
     if not submenu:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'submenu not found')
-    return submenu.response(db)
+    return submenu.response()
 
 
-@router.put('/{target_submenu_id}', status_code=status.HTTP_202_ACCEPTED,
-            response_model=schemas.ShowSubmenu)
+@router.put('/{target_submenu_id}', status_code=status.HTTP_202_ACCEPTED)
 def update_submenu(target_submenu_id, request: schemas.Submenus, db: Session = Depends(get_db)):
     submenu = db.query(models.Submenus).filter(models.Submenus.id == target_submenu_id)
     if not submenu:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f'submenu not found')
     submenu.update(request)
     db.commit()
+    return submenu.response()
 
 
 @router.patch('/{target_submenu_id}', status_code=status.HTTP_200_OK)
@@ -56,7 +56,7 @@ def update_submenu(target_submenu_id, request: schemas.Submenus, db: Session = D
     db.add(submenu)
     db.commit()
     db.refresh(submenu)
-    return submenu.response(db)
+    return submenu.response()
 
 
 @router.delete('/{target_submenu_id}', status_code=status.HTTP_200_OK)
